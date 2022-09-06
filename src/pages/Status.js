@@ -5,9 +5,10 @@ import { Container } from "../globlaStyles";
 import { useSelector, useDispatch } from "react-redux";
 import { updateNCR } from "../redux/features/ncr/ncrSlice";
 import BasicModal from "../utils/BasicModal";
+import { createBrowserHistory } from "history";
 
-const Headers = ["Initiated", "In Progress", "Review"];
-const colors = ["black", "purple", "blue", "green"];
+const Headers = ["Initiated", "In Progress", "Review", "Approved"];
+const colors = ["black", "purple", "blue", "green", "green"];
 
 function Status() {
   const dispatch = useDispatch();
@@ -15,6 +16,7 @@ function Status() {
   const [id, setId] = React.useState();
   const [status, setStatus] = React.useState();
   const [open, setOpen] = React.useState(false);
+  const history = createBrowserHistory();
 
   const handleDragEnter = (e, status) => {
     e.preventDefault();
@@ -36,8 +38,9 @@ function Status() {
     e.preventDefault();
   };
 
-  const handleOpen = () => {
+  const handleOpen = (id, header) => {
     setOpen(true);
+    history.push(`/${header}?id=${id}`);
   };
 
   return (
@@ -61,7 +64,9 @@ function Status() {
                       key={index}
                       setId={setId}
                       index={index}
+                      id={item.id}
                       handleOpen={handleOpen}
+                      header={header}
                     />
                   )
               )}
