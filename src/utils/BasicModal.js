@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import Backdrop from "@mui/material/Backdrop";
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
-import Fade from "@mui/material/Fade";
-import Typography from "@mui/material/Typography";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import React, { useState } from 'react';
+import Backdrop from '@mui/material/Backdrop';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import Fade from '@mui/material/Fade';
+import Typography from '@mui/material/Typography';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {
   FormControl,
   IconButton,
@@ -12,68 +12,89 @@ import {
   MenuItem,
   Select,
   TextField,
-} from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
-import { toast } from "react-toastify";
+} from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+import { toast } from 'react-toastify';
+import DragandDrop from './DragandDrop';
 
 const style = {
-  position: "absolute",
-  top: "40%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
+  position: 'absolute',
+  top: '40%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
   width: 800,
-  bgcolor: "background.paper",
+  bgcolor: 'background.paper',
   // border: "2px solid #000",
   boxShadow: 24,
   p: 4,
 };
 
 const boxstyle = {
-  display: "flex",
+  display: 'flex',
   p: 4,
-  flexDirection: "column",
+  flexDirection: 'column',
 };
 
 const theme = createTheme({
   typography: {
-    fontFamily: "Hahmlet, serif",
+    fontFamily: 'Hahmlet, serif',
   },
 });
 
 export default function TransitionsModal({ open, setOpen }) {
   const [formData, setFormData] = useState({
-    priority: "",
-    details: [{ name: "", department: "" }],
+    priority: '',
+    details: [{ name: '', department: '' }],
   });
+  const [files, setFiles] = useState([]);
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    console.log(e.dataTransfer.files);
+  };
+
+  // const handleDragEnter = (e) => {
+  //   e.preventDefault();
+  //   console.log('entered');
+  // };
 
   const { priority, details } = formData;
 
   const handleClose = () => setOpen(false);
+
   const handleRemove = (e, index) => {
     e.preventDefault();
-    const data = [...formData];
-    data.splice(index, 1);
+    const data = { ...formData };
+    data.details.splice(index, 1);
     setFormData(data);
   };
 
   const handleAdd = () => {
-    setFormData([...formData, { name: "", department: "" }]);
+    if (formData.details.length < 3) {
+      const updatedData = [...formData.details, { name: '', department: '' }];
+      setFormData({ ...formData, details: updatedData });
+    } else {
+      toast.error('Max number of Assignment reached');
+    }
   };
 
   const handleChange = (e, index) => {
     const { name, value } = e.target;
 
-    const data = [...formData];
-    //first check if the value exist first
+    const data = { ...formData };
 
-    const exist = data.filter((item) => item[name] === value);
+    if (name === 'name' || name === 'department') {
+      const exist = data.details.filter((item) => item[name] === value);
 
-    if (exist.length < 1) {
-      data[index][name] = value;
-      setFormData(data);
+      if (exist.length < 1) {
+        data.details[index][name] = value;
+        setFormData(data);
+      } else {
+        toast.error('Already selected');
+      }
     } else {
-      toast.error("Already selected");
+      setFormData((prevState) => ({ ...prevState, [name]: value }));
     }
   };
 
@@ -82,8 +103,8 @@ export default function TransitionsModal({ open, setOpen }) {
       <div>
         {/* <Button onClick={handleOpen}>Open modal</Button> */}
         <Modal
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
+          aria-labelledby='transition-modal-title'
+          aria-describedby='transition-modal-description'
           open={open}
           // onClose={handleClose}
           closeAfterTransition
@@ -94,69 +115,71 @@ export default function TransitionsModal({ open, setOpen }) {
         >
           <Fade in={open}>
             <Box sx={style}>
-              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Typography
-                  id="transition-modal-title"
-                  variant="h5"
-                  component="h2"
+                  id='transition-modal-title'
+                  variant='h5'
+                  component='h2'
                 >
                   Tasks Assignment
                 </Typography>
-                <IconButton color="primary" onClick={handleAdd}>
-                  <AddIcon fontSize="medium" />
+                <IconButton color='primary' onClick={handleAdd}>
+                  <AddIcon fontSize='medium' />
                 </IconButton>
               </Box>
-
               <Box sx={boxstyle}>
                 {formData.details.map((item, index) => {
                   return (
-                    <div style={{ display: "flex", marginBottom: "10px" }}>
-                      <FormControl variant="filled" fullWidth>
-                        <InputLabel id="departments">Department</InputLabel>
+                    <div
+                      style={{ display: 'flex', marginBottom: '10px' }}
+                      key={index}
+                    >
+                      <FormControl variant='filled' fullWidth>
+                        <InputLabel id='departments'>Department</InputLabel>
                         <Select
-                          labelId="departments"
-                          label="departments"
+                          labelId='departments'
+                          label='departments'
                           value={item.department}
-                          name="department"
+                          name='department'
                           onChange={(e) => handleChange(e, index)}
                         >
-                          <MenuItem value="">
+                          <MenuItem value=''>
                             <em>None</em>
                           </MenuItem>
-                          <MenuItem value="QA">Quality Assurance</MenuItem>
-                          <MenuItem value="OPS">Operations</MenuItem>
-                          <MenuItem value="PD">Product Developement</MenuItem>
+                          <MenuItem value='QA'>Quality Assurance</MenuItem>
+                          <MenuItem value='OPS'>Operations</MenuItem>
+                          <MenuItem value='PD'>Product Developement</MenuItem>
                         </Select>
                       </FormControl>
-                      <FormControl variant="filled" fullWidth sx={{ mx: 2 }}>
-                        <InputLabel id="name">Name</InputLabel>
+                      <FormControl variant='filled' fullWidth sx={{ mx: 2 }}>
+                        <InputLabel id='name'>Name</InputLabel>
                         <Select
-                          labelId="name"
-                          label="name"
+                          labelId='name'
+                          label='name'
                           value={item.name}
                           onChange={(e) => handleChange(e, index)}
-                          name="name"
+                          name='name'
                         >
-                          <MenuItem value="">
+                          <MenuItem value=''>
                             <em>None</em>
                           </MenuItem>
-                          <MenuItem value="Maduvha Nemadandila">
+                          <MenuItem value='Maduvha Nemadandila'>
                             Maduvha Nemadandila
                           </MenuItem>
-                          <MenuItem value="Karabo Notwana">
+                          <MenuItem value='Karabo Notwana'>
                             Karabo Notwana
                           </MenuItem>
-                          <MenuItem value="Thabiso Bokaba">
+                          <MenuItem value='Thabiso Bokaba'>
                             Thabiso Bokaba
                           </MenuItem>
                         </Select>
                       </FormControl>
                       {index > 0 ? (
                         <IconButton
-                          sx={{ color: "red" }}
+                          sx={{ color: 'red' }}
                           onClick={(e) => handleRemove(e, index)}
                         >
-                          <RemoveIcon fontSize="medium" />
+                          <RemoveIcon fontSize='medium' />
                         </IconButton>
                       ) : (
                         <span style={{ width: 90 }}></span>
@@ -165,23 +188,29 @@ export default function TransitionsModal({ open, setOpen }) {
                   );
                 })}
               </Box>
-              <Typography>
-                Priority Level <span style={{ color: "red" }}>*</span>:
+
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Typography>
+                  Priority Level <span style={{ color: 'red' }}>*</span>:
+                </Typography>
                 <TextField
                   select
-                  label="Priority Level"
-                  value="priority"
-                  name="priority"
-                  variant="filled"
-                  // onChange={}
+                  label='Priority Level'
+                  value={priority}
+                  name='priority'
+                  variant='filled'
+                  onChange={(e) => handleChange(e, 0)}
                   sx={{ width: 150 }}
                 >
-                  <MenuItem value="">High</MenuItem>
-                  <MenuItem value="low">Low</MenuItem>
-                  <MenuItem value="medium">Medium</MenuItem>
-                  <MenuItem value="high">High</MenuItem>
+                  <MenuItem value=''>
+                    <em>None</em>
+                  </MenuItem>
+                  <MenuItem value='low'>Low</MenuItem>
+                  <MenuItem value='medium'>Medium</MenuItem>
+                  <MenuItem value='high'>High</MenuItem>
                 </TextField>
-              </Typography>
+              </Box>
+              <DragandDrop handleDrop={handleDrop} />
             </Box>
           </Fade>
         </Modal>
