@@ -10,7 +10,7 @@ import { createBrowserHistory } from "history";
 const Headers = ["Initiated", "In Progress", "Review", "Approved"];
 const colors = ["black", "purple", "blue", "green", "green"];
 
-function Status() {
+function Workflow() {
   const dispatch = useDispatch();
   const { data } = useSelector((state) => state.ncrs);
   const [id, setId] = React.useState();
@@ -43,8 +43,12 @@ function Status() {
     history.push(`/${header}?id=${id}`);
   };
 
+  const handleStart = (e, index) => {
+    e.preventDefault();
+    setId(index);
+  };
   return (
-    <div>
+    <Container>
       <BasicModal open={open} setOpen={setOpen} />
       <StatusContainer>
         {Headers.map((header, id) => (
@@ -62,7 +66,7 @@ function Status() {
                     <Card
                       data={item}
                       key={index}
-                      setId={setId}
+                      handleStart={handleStart}
                       index={index}
                       id={item.id}
                       handleOpen={handleOpen}
@@ -74,11 +78,11 @@ function Status() {
           </StatusItems>
         ))}
       </StatusContainer>
-    </div>
+    </Container>
   );
 }
 
-export default Status;
+export default Workflow;
 
 const StatusContainer = styled(Container)`
   display: grid;

@@ -4,8 +4,17 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { IconButton } from "@mui/material";
 import CircleIcon from "@mui/icons-material/Circle";
 import moment from "moment";
+import { createBrowserHistory } from "history";
 
-function Card({ data, index, setId, handleOpen, id, header }) {
+function Card({ data, index, handleOpen, id, header, handleDragStart }) {
+  const onHandleOpen = (id, header) => {
+    handleOpen(id, header);
+  };
+
+  const onDragStart = (e, index) => {
+    handleDragStart(index);
+  };
+
   const colors = (priorityLevel) => {
     return priorityLevel?.toLowerCase() === "high"
       ? "red"
@@ -21,10 +30,10 @@ function Card({ data, index, setId, handleOpen, id, header }) {
   return (
     <CardContainer
       draggable
-      onDragStart={() => setId(index)}
+      onDragStart={(e) => onDragStart(index)}
       backgroundcolor={colors(data?.priorityLevel)}
       color={
-        colors(data.priorityLevel) === "white"
+        colors(data?.priorityLevel) === "white"
           ? "rgba(0, 0, 0, 0.7)"
           : "rgba(255, 255, 255, 0.8)"
       }
@@ -32,20 +41,20 @@ function Card({ data, index, setId, handleOpen, id, header }) {
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <CardBody>
           <CardHeader>
-            {data.descrtiption.length > 100
-              ? data.descrtiption.substring(0, 100) + "..."
-              : data.descrtiption}
+            {data?.descrtiption.length > 100
+              ? data?.descrtiption.substring(0, 100) + "..."
+              : data?.descrtiption}
           </CardHeader>
           <CardInfo>
             <span>Product Name: Propellant S365</span>
             <span>
               Priority Level:
               {" " +
-                data.priorityLevel[0]?.toUpperCase() +
-                data.priorityLevel?.slice(1, data?.priorityLevel?.length)}
+                data?.priorityLevel?.[0]?.toUpperCase() +
+                data?.priorityLevel?.slice(1, data?.priorityLevel?.length)}
             </span>
             <Items>
-              {data.status === "In Progress" &&
+              {data?.status === "In Progress" &&
                 data?.details.map((item, idx) => (
                   <ItemInfo key={idx}>
                     {item.department}:
@@ -61,7 +70,7 @@ function Card({ data, index, setId, handleOpen, id, header }) {
         </CardBody>
         <IconButton
           sx={{ alignItems: "flex-start", height: 40 }}
-          onClick={() => handleOpen(id, header)}
+          onClick={() => onHandleOpen(id, header)}
         >
           <MenuIcon />
         </IconButton>
