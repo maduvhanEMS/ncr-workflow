@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 export const Container = styled.section`
   max-width: 1600px;
   margin: 0 auto;
-  height: 100vh;
+  height: calc(100vh-80px);
   padding: 1rem;
 `;
 

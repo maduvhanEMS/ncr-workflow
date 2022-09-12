@@ -7,6 +7,8 @@ import Workflow from "./pages/Workflow";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 
+import AddNCR from "./pages/AddNCR";
+
 function App() {
   return (
     <Router>
@@ -15,6 +17,7 @@ function App() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/workflow" element={<Workflow />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/addncr" element={<AddNCR />} />
       </Routes>
     </Router>
   );

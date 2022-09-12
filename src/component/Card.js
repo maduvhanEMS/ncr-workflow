@@ -6,13 +6,14 @@ import CircleIcon from "@mui/icons-material/Circle";
 import moment from "moment";
 import { createBrowserHistory } from "history";
 
-function Card({ data, index, handleOpen, id, header, handleDragStart }) {
+function Card({ data, index, handleOpen, id, header, handleStart }) {
   const onHandleOpen = (id, header) => {
     handleOpen(id, header);
   };
 
-  const onDragStart = (e, index) => {
-    handleDragStart(index);
+  const onDragStart = (e, id) => {
+    handleStart(e, id);
+    console.log(id);
   };
 
   const colors = (priorityLevel) => {
@@ -30,7 +31,7 @@ function Card({ data, index, handleOpen, id, header, handleDragStart }) {
   return (
     <CardContainer
       draggable
-      onDragStart={(e) => onDragStart(index)}
+      onDragStart={(e) => onDragStart(e, id)}
       backgroundcolor={colors(data?.priorityLevel)}
       color={
         colors(data?.priorityLevel) === "white"
@@ -41,9 +42,9 @@ function Card({ data, index, handleOpen, id, header, handleDragStart }) {
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <CardBody>
           <CardHeader>
-            {data?.descrtiption.length > 100
-              ? data?.descrtiption.substring(0, 100) + "..."
-              : data?.descrtiption}
+            {data?.partDescription.length > 100
+              ? data?.partDescription.substring(0, 100) + "..."
+              : data?.partDescription}
           </CardHeader>
           <CardInfo>
             <span>Product Name: Propellant S365</span>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Card from "../component/Card";
 import { Container } from "../globlaStyles";
@@ -17,20 +17,49 @@ function Workflow() {
   const [status, setStatus] = React.useState();
   const [open, setOpen] = React.useState(false);
   const history = createBrowserHistory();
+  const [checkDrop, setCheckdrop] = useState(0);
 
-  const handleDragEnter = (e, status) => {
+  const handleDragEnter = async (e, status) => {
     e.preventDefault();
     setStatus(status);
+
+    //check the status number
+    const draggedData = await data.findIndex((item) => item.id === id);
+    const statusDragged = await data[draggedData].status;
+    if (
+      Headers.indexOf(status) - Headers.indexOf(statusDragged) >= 1 &&
+      Headers.indexOf(status) - Headers.indexOf(statusDragged) < 2
+    ) {
+      setCheckdrop(1);
+    } else {
+      setCheckdrop(0);
+    }
   };
 
-  const handleDrop = (e) => {
+  const handleDrop = async (e) => {
     e.preventDefault();
 
-    const data = {
+    const updateData = {
       status,
       id,
     };
-    if (id !== "") dispatch(updateNCR(data));
+    if (checkDrop !== 0) {
+      //check if we are dropping it at In progress
+      if (status === "In Progress") {
+        //check if the data is populated
+        console.log(data);
+        const index = await data.findIndex((item) => item.id === id);
+
+        if (!data[index].details.length > 0) {
+          setOpen(true);
+        } else {
+          dispatch(updateNCR(updateData));
+        }
+      } else {
+        dispatch(updateNCR(updateData));
+      }
+    }
+    //Assign the responsible person
   };
 
   const handleDragOver = (e) => {
@@ -40,16 +69,17 @@ function Workflow() {
 
   const handleOpen = (id, header) => {
     setOpen(true);
+    setId(id);
     history.push(`/${header}?id=${id}`);
   };
 
   const handleStart = (e, index) => {
-    e.preventDefault();
+    // e.preventDefault();
     setId(index);
   };
   return (
     <Container>
-      <BasicModal open={open} setOpen={setOpen} />
+      <BasicModal open={open} setOpen={setOpen} idx={id} />
       <StatusContainer>
         {Headers.map((header, id) => (
           <StatusItems
