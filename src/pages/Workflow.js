@@ -6,6 +6,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { updateNCR } from "../redux/features/ncr/ncrSlice";
 import BasicModal from "../utils/BasicModal";
 import { createBrowserHistory } from "history";
+import Assignment from "../component/forms/Assignment";
+import ProgressForm from "../component/forms/ProgressForm";
 
 const Headers = ["Initiated", "In Progress", "Review", "Approved"];
 const colors = ["black", "purple", "blue", "green", "green"];
@@ -79,7 +81,10 @@ function Workflow() {
   };
   return (
     <Container>
-      <BasicModal open={open} setOpen={setOpen} idx={id} />
+      <BasicModal open={open} setOpen={setOpen} idx={id}>
+        {/* <Assignment id={id} /> */}
+        <ProgressForm id={id} />
+      </BasicModal>
       <StatusContainer>
         {Headers.map((header, id) => (
           <StatusItems

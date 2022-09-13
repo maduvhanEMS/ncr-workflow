@@ -22,16 +22,16 @@ import DownloadIcon from "@mui/icons-material/Download";
 import PreviewIcon from "@mui/icons-material/Preview";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-const style = {
-  position: "absolute",
-  top: "40%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 800,
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  p: 4,
-};
+// const style = {
+//   position: "absolute",
+//   top: "40%",
+//   left: "50%",
+//   transform: "translate(-50%, -50%)",
+//   width: 800,
+//   bgcolor: "background.paper",
+//   boxShadow: 24,
+//   p: 4,
+// };
 
 const Assignment = ({ open, setOpen, id }) => {
   const [formData, setFormData] = useState({
@@ -52,7 +52,7 @@ const Assignment = ({ open, setOpen, id }) => {
 
   const { priority, details } = formData;
 
-  const handleClose = () => setOpen(false);
+  //   const handleClose = () => setOpen(false);
 
   const handleRemove = (e, index) => {
     e.preventDefault();

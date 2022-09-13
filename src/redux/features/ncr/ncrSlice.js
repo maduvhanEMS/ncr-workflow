@@ -28,8 +28,8 @@ const initialState = {
           department: "QA",
           status: "Completed",
         },
-        { name: "Saajidah", department: "OPS", status: "Pending" },
-        { name: "Peter", department: "PD", status: "Pending" },
+        { name: "Saajidah", department: "OPS", status: "Checked out" },
+        { name: "Peter", department: "PD", status: "Not Started" },
       ],
       files: [],
     },
@@ -45,9 +45,9 @@ const initialState = {
         {
           name: "Heinrich",
           department: "QA",
-          status: "Pending",
+          status: "Checked out",
         },
-        { name: "Saajidah", department: "OPS", status: "Pending" },
+        { name: "Saajidah", department: "OPS", status: "Checked out" },
         {
           name: "Peter",
           department: "PD",
