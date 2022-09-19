@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Paper,
   Table,
@@ -16,21 +16,21 @@ import {
   Select,
   MenuItem,
   MenuList,
-} from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import AddIcon from "@mui/icons-material/Add";
-import SaveIcon from "@mui/icons-material/Save";
-import CancelIcon from "@mui/icons-material/Cancel";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { toast } from "react-toastify";
+} from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add';
+import SaveIcon from '@mui/icons-material/Save';
+import CancelIcon from '@mui/icons-material/Cancel';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { toast } from 'react-toastify';
 
-import moment from "moment";
-import Files from "./Files";
-import DragandDrop from "../../utils/DragandDrop";
+import moment from 'moment';
+import Files from './Files';
+import DragandDrop from '../../utils/DragandDrop';
 
 const ProgressForm = ({ id }) => {
-  const [edit, setEdit] = useState({ index: "", isEdit: false });
+  const [edit, setEdit] = useState({ index: '', isEdit: false });
   const [open, setOpen] = useState(false);
   const [files, setFiles] = useState([]);
 
@@ -48,7 +48,7 @@ const ProgressForm = ({ id }) => {
 
   //Update the files when the data changes
   useMemo(() => {
-    console.log("you have been updated");
+    console.log('you have been updated');
     setFiles(data.files);
   }, [data]);
 
@@ -76,7 +76,7 @@ const ProgressForm = ({ id }) => {
       if (idx < 0) {
         file.push(e.target.files[0]);
       } else {
-        toast.error("File already uploaded");
+        toast.error('File already uploaded');
       }
     }
 
@@ -85,8 +85,8 @@ const ProgressForm = ({ id }) => {
 
   const handleFile = (file) => {
     //validation
-    if (!file.type.startsWith("application"))
-      return toast.error("Please Insert pdf file");
+    if (!file.type.startsWith('application'))
+      return toast.error('Please Insert pdf file');
 
     //create object url
     setFiles([...files, file]);
@@ -106,26 +106,26 @@ const ProgressForm = ({ id }) => {
 
   return (
     <Paper elevation={0}>
-      <Typography id="transition-modal-title" variant="h5" component="h2">
+      <Typography id='transition-modal-title' variant='h5' component='h2'>
         Progress Form
       </Typography>
       <Box
         sx={{
-          display: "flex",
-          justifyContent: "flex-end",
-          width: "100%",
+          display: 'flex',
+          justifyContent: 'flex-end',
+          width: '100%',
         }}
       >
         <IconButton>
-          <AddIcon sx={{ color: "blue" }} />
+          <AddIcon sx={{ color: 'blue' }} />
         </IconButton>
         <IconButton>
-          <EditIcon sx={{ color: "blue" }} />
+          <EditIcon sx={{ color: 'blue' }} />
         </IconButton>
       </Box>
       <Box>
-        <TableContainer component="div" sx={{ mt: 2 }}>
-          <Table size="small">
+        <TableContainer component='div' sx={{ mt: 2 }}>
+          <Table size='small'>
             <TableHead>
               <TableRow>
                 <TableCell>Department</TableCell>
@@ -143,21 +143,21 @@ const ProgressForm = ({ id }) => {
                       <TableCell>
                         <Select
                           value={row.name}
-                          name="department"
+                          name='department'
                           fullWidth
-                          size="small"
+                          size='small'
                           sx={{ width: 150 }}
                         >
-                          <MenuItem value="Maduvha Nemadandila">
+                          <MenuItem value='Maduvha Nemadandila'>
                             Maduvha Nemadandila
                           </MenuItem>
-                          <MenuItem value="Maduvha Nemadandila">
+                          <MenuItem value='Maduvha Nemadandila'>
                             Heinrich
                           </MenuItem>
-                          <MenuItem value="Karabo Notwana">
+                          <MenuItem value='Karabo Notwana'>
                             Karabo Notwana
                           </MenuItem>
-                          <MenuItem value="Thabiso Bokaba">
+                          <MenuItem value='Thabiso Bokaba'>
                             Thabiso Bokaba
                           </MenuItem>
                         </Select>
@@ -165,29 +165,29 @@ const ProgressForm = ({ id }) => {
                       <TableCell>{row.department}</TableCell>
                       <TableCell>
                         <Select
-                          size="small"
-                          labelId="departments"
-                          label="departments"
+                          size='small'
+                          labelId='departments'
+                          label='departments'
                           value={row.status}
-                          name="department"
+                          name='department'
                           //   onChange={(e) => handleChange(e, index)}
                         >
-                          <MenuItem value="">
+                          <MenuItem value=''>
                             <em>None</em>
                           </MenuItem>
-                          <MenuItem value="Completed">Completed</MenuItem>
-                          <MenuItem value="Checked out">Checked out</MenuItem>
-                          <MenuItem value="Not Started">Not Started</MenuItem>
+                          <MenuItem value='Completed'>Completed</MenuItem>
+                          <MenuItem value='Checked out'>Checked out</MenuItem>
+                          <MenuItem value='Not Started'>Not Started</MenuItem>
                         </Select>
                       </TableCell>
-                      <TableCell>{moment().startOf("day").fromNow()}</TableCell>
+                      <TableCell>{moment().startOf('day').fromNow()}</TableCell>
                     </>
                   ) : (
                     <>
                       <TableCell>{row.name}</TableCell>
                       <TableCell>{row.department}</TableCell>
                       <TableCell>{row.status}</TableCell>
-                      <TableCell>{moment().startOf("day").fromNow()}</TableCell>
+                      <TableCell>{moment().startOf('day').fromNow()}</TableCell>
                     </>
                   )}
 
