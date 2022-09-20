@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import Backdrop from '@mui/material/Backdrop';
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import Fade from '@mui/material/Fade';
-import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import React, { useState, useEffect } from "react";
+import Backdrop from "@mui/material/Backdrop";
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
+import Fade from "@mui/material/Fade";
+import Typography from "@mui/material/Typography";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import {
   FormControl,
   IconButton,
@@ -14,36 +14,37 @@ import {
   TextField,
   Button,
   Stack,
-} from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
-import { toast } from 'react-toastify';
-import DragandDrop from './DragandDrop';
-import DownloadIcon from '@mui/icons-material/Download';
-import PreviewIcon from '@mui/icons-material/Preview';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { useSearchParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { AssignNCR, reset } from '../redux/features/ncr/ncrSlice';
-
-const style = {
-  position: 'absolute',
-  top: '40%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 1200,
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-  p: 4,
-};
+} from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+import { toast } from "react-toastify";
+import DragandDrop from "./DragandDrop";
+import DownloadIcon from "@mui/icons-material/Download";
+import PreviewIcon from "@mui/icons-material/Preview";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useSearchParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { AssignNCR, reset } from "../redux/features/ncr/ncrSlice";
 
 const theme = createTheme({
   typography: {
-    fontFamily: 'Hahmlet, serif',
+    fontFamily: "Hahmlet, serif",
   },
 });
 
 export default function TransitionsModal(props) {
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: props.width,
+    bgcolor: "background.paper",
+    boxShadow: 24,
+    p: 4,
+    overflowY: "scroll",
+    maxHeight: "80%",
+  };
   // const [formData, setFormData] = useState({
   //   priority: "",
   //   details: [{ name: "", department: "", status: "" }],
@@ -192,8 +193,8 @@ export default function TransitionsModal(props) {
       <div>
         {/* <Button onClick={handleOpen}>Open modal</Button> */}
         <Modal
-          aria-labelledby='transition-modal-title'
-          aria-describedby='transition-modal-description'
+          aria-labelledby="transition-modal-title"
+          aria-describedby="transition-modal-description"
           open={props.open}
           onClose={handleClose}
           closeAfterTransition

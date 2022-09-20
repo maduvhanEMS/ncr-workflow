@@ -57,3 +57,10 @@ input:focus + label {
   position: absolute;
   z-index: 1;
 }
+
+#editorjs {
+  background-color: rgba(0, 0, 0, 0.1);
+  width: 100%;
+  margin: 0%;
+  padding: 0;
+}

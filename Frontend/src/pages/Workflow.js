@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import Card from '../component/Card';
-import { Container } from '../globlaStyles';
-import { useSelector, useDispatch } from 'react-redux';
-import { updateNCR } from '../redux/features/ncr/ncrSlice';
-import BasicModal from '../utils/BasicModal';
-import { createBrowserHistory } from 'history';
-import Assignment from '../component/forms/Assignment';
-import ProgressForm from '../component/forms/ProgressForm';
-import Populate from '../component/forms/Populate/Populate';
+import React, { useState } from "react";
+import styled from "styled-components";
+import Card from "../component/Card";
+import { Container } from "../globlaStyles";
+import { useSelector, useDispatch } from "react-redux";
+import { updateNCR } from "../redux/features/ncr/ncrSlice";
+import BasicModal from "../utils/BasicModal";
+import { createBrowserHistory } from "history";
+import Assignment from "../component/forms/Assignment";
+import ProgressForm from "../component/forms/ProgressForm";
+import Populate from "../component/forms/Populate/Populate";
 
-const Headers = ['Initiated', 'In Progress', 'Review', 'Approved'];
-const colors = ['black', 'purple', 'blue', 'green', 'green'];
+const Headers = ["Initiated", "In Progress", "Review", "Approved"];
+const colors = ["black", "purple", "blue", "green", "green"];
 
 function Workflow() {
   const dispatch = useDispatch();
@@ -48,7 +48,7 @@ function Workflow() {
     };
     if (checkDrop !== 0) {
       //check if we are dropping it at In progress
-      if (status === 'In Progress') {
+      if (status === "In Progress") {
         //check if the data is populated
         console.log(data);
         const index = await data.findIndex((item) => item.id === id);
@@ -82,10 +82,10 @@ function Workflow() {
   };
   return (
     <Container>
-      <BasicModal open={open} setOpen={setOpen} idx={id}>
+      <BasicModal open={open} setOpen={setOpen} idx={id} width={900}>
         {/* <Assignment id={id} /> */}
-        {/* <ProgressForm id={id} /> */}
-        <Populate />
+        <ProgressForm id={id} />
+        {/* <Populate /> */}
       </BasicModal>
       <StatusContainer>
         {Headers.map((header, id) => (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Paper,
   Table,
@@ -9,27 +9,26 @@ import {
   TableCell,
   TableBody,
   TableContainer,
-  //   TextField,
   IconButton,
   Input,
   Select,
   MenuItem,
   MenuList,
   TextField,
-} from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
-import AddIcon from '@mui/icons-material/Add';
-import SaveIcon from '@mui/icons-material/Save';
-import CancelIcon from '@mui/icons-material/Cancel';
-import DeleteIcon from '@mui/icons-material/Delete';
+} from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import AddIcon from "@mui/icons-material/Add";
+import SaveIcon from "@mui/icons-material/Save";
+import CancelIcon from "@mui/icons-material/Cancel";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const Charateristics = () => {
   const [formData, setFormData] = useState([
     {
-      charateristics: '',
-      specification: '',
-      results: '',
-      classification: '',
+      charateristics: "",
+      specification: "",
+      results: "",
+      classification: "",
     },
   ]);
   const [isEdit, setIsEdit] = useState(true);
@@ -47,10 +46,10 @@ const Charateristics = () => {
     setFormData((prevState) => [
       ...prevState,
       {
-        charateristics: '',
-        specification: '',
-        results: '',
-        classification: '',
+        charateristics: "",
+        specification: "",
+        results: "",
+        classification: "",
       },
     ]);
   };
@@ -67,21 +66,18 @@ const Charateristics = () => {
   const handleCancel = () => {};
 
   return (
-    <TableContainer component='div' sx={{ mt: 2 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-        {/* <Typography variant='h6' component='h'>
-          Charateristics
-        </Typography> */}
+    <TableContainer component="div">
+      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
         <Box>
           <IconButton onClick={handleAdd}>
-            <AddIcon sx={{ color: 'blue' }} />
+            <AddIcon sx={{ color: "blue" }} />
           </IconButton>
           <IconButton onClick={handleEdit}>
-            <EditIcon sx={{ color: 'blue' }} />
+            <EditIcon sx={{ color: "blue" }} />
           </IconButton>
         </Box>
       </Box>
-      <Table size='small'>
+      <Table size="small">
         <TableHead>
           <TableRow>
             <TableCell>Charateristics</TableCell>
@@ -95,33 +91,33 @@ const Charateristics = () => {
             <TableRow key={index}>
               <TableCell>
                 <textarea
-                  name='charateristics'
-                  style={{ resize: 'vertical' }}
+                  name="charateristics"
+                  style={{ resize: "vertical" }}
                   value={data.charateristics}
                   onChange={(e) => handleChange(e, index)}
                 />
               </TableCell>
               <TableCell>
                 <textarea
-                  name='specification'
+                  name="specification"
                   value={data.specification}
-                  style={{ resize: 'vertical' }}
+                  style={{ resize: "vertical" }}
                   onChange={(e) => handleChange(e, index)}
                 />
               </TableCell>
               <TableCell>
                 <textarea
-                  name='results'
+                  name="results"
                   value={data.results}
-                  style={{ resize: 'vertical' }}
+                  style={{ resize: "vertical" }}
                   onChange={(e) => handleChange(e, index)}
                 />
               </TableCell>
               <TableCell>
                 <textarea
-                  name='classification'
+                  name="classification"
                   value={data.classification}
-                  style={{ resize: 'vertical' }}
+                  style={{ resize: "vertical" }}
                   onChange={(e) => handleChange(e, index)}
                 />
                 {/* {isEdit ? (
@@ -142,7 +138,7 @@ const Charateristics = () => {
               <TableCell>
                 {index > 0 && (
                   <IconButton
-                    sx={{ color: 'red' }}
+                    sx={{ color: "red" }}
                     onClick={() => handleRemove(index)}
                   >
                     <DeleteIcon />
