@@ -17,10 +17,11 @@ function Workflow() {
   const dispatch = useDispatch();
   const { data } = useSelector((state) => state.ncrs);
   const [id, setId] = React.useState();
-  const [status, setStatus] = React.useState();
+  const [status, setStatus] = React.useState("");
   const [open, setOpen] = React.useState(false);
   const history = createBrowserHistory();
   const [checkDrop, setCheckdrop] = useState(0);
+  const [stage, setStage] = useState("");
 
   const handleDragEnter = async (e, status) => {
     e.preventDefault();
@@ -73,6 +74,7 @@ function Workflow() {
   const handleOpen = (id, header) => {
     setOpen(true);
     setId(id);
+    setStage(header);
     history.push(`/${header}?id=${id}`);
   };
 
@@ -82,9 +84,9 @@ function Workflow() {
   };
   return (
     <Container>
-      <BasicModal open={open} setOpen={setOpen} idx={id} width={900}>
+      <BasicModal open={open} setOpen={setOpen} idx={id} width={1000}>
         {/* <Assignment id={id} /> */}
-        <ProgressForm id={id} />
+        <ProgressForm id={id} status={stage} />
         {/* <Populate /> */}
       </BasicModal>
       <StatusContainer>

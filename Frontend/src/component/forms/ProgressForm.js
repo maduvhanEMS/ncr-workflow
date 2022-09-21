@@ -29,8 +29,9 @@ import moment from "moment";
 import Files from "./Files";
 import DragandDrop from "../../utils/DragandDrop";
 import Comments from "./Populate/Comments";
+import Charateristics from "./Populate/Charateristics";
 
-const ProgressForm = ({ id }) => {
+const ProgressForm = ({ id, status }) => {
   const [edit, setEdit] = useState({ index: "", isEdit: false });
   const [open, setOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -119,7 +120,8 @@ const ProgressForm = ({ id }) => {
       <Typography id="transition-modal-title" variant="h5" component="h2">
         Progress Form
       </Typography>
-      <Box
+      <Charateristics status={status} />
+      {/* <Box
         sx={{
           display: "flex",
           justifyContent: "flex-end",
@@ -132,7 +134,7 @@ const ProgressForm = ({ id }) => {
         <IconButton>
           <EditIcon sx={{ color: "blue" }} />
         </IconButton>
-      </Box>
+      </Box> */}
       <Box>
         <TableContainer component="div" sx={{ mt: 2 }}>
           <Table size="small">
