@@ -74,24 +74,21 @@ const Charateristics = ({ status }) => {
 
   const handleCancel = () => {
     //check if there is a
-    const chars = [...formData];
+    // const chars = [...formData];
 
-    const isEmptyArray = formData.map((item) =>
-      Object.values(item).some((item) => item === "")
+    const isEmptyArray = formData.filter((item) =>
+      Object.values(item).some((item) => item !== "")
     );
-    for (var i = 0; i < isEmptyArray.length; i++) {
-      if (isEmptyArray[i] === true) {
-        chars.splice(i, 1);
-      }
-    }
+    // console.log(isEmptyArray);
+    // for (var i = 0; i < isEmptyArray.length; i++) {
+    //   if (isEmptyArray[i] === true) {
+    //     chars.splice(i, 1);
+    //   }
+    // }
 
-    setFormData(chars);
+    setFormData(isEmptyArray);
     setIsEdit(false);
   };
-
-  console.log(
-    formData.map((item) => Object.values(item).some((item) => item === ""))
-  );
 
   return (
     <TableContainer component="div">
