@@ -118,7 +118,7 @@ const ProgressForm = ({ id, status }) => {
   return (
     <Paper elevation={0}>
       <Typography id="transition-modal-title" variant="h5" component="h2">
-        Progress Form
+        {status}
       </Typography>
       <Charateristics status={status} />
       {/* <Box
@@ -131,7 +131,7 @@ const ProgressForm = ({ id, status }) => {
         <IconButton>
           <AddIcon sx={{ color: "blue" }} />
         </IconButton>
-        <IconButton>
+        <IconButton>N
           <EditIcon sx={{ color: "blue" }} />
         </IconButton>
       </Box> */}

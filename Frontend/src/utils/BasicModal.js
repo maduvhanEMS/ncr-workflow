@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -31,6 +31,20 @@ const theme = createTheme({
     fontFamily: "Hahmlet, serif",
   },
 });
+
+function useClickedOutsideHook(ref) {
+  useEffect(() => {
+    console.log(ref);
+    const handleClick = (event) => {
+      if (ref.current && !ref.current.contains(event.target)) {
+        console.log("I am clicked", event);
+      }
+    };
+    document.addEventListener("mousedouwn", handleClick);
+
+    return () => [document.removeEventListener("mousedown", handleClick)];
+  }, [ref]);
+}
 
 export default function TransitionsModal(props) {
   const style = {
@@ -188,6 +202,11 @@ export default function TransitionsModal(props) {
   //   });
   // };
 
+  const wrapperRef = useRef();
+
+  // console.log(wrapperRef);
+  useClickedOutsideHook(wrapperRef);
+
   return (
     <ThemeProvider theme={theme}>
       <div>
@@ -196,6 +215,7 @@ export default function TransitionsModal(props) {
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
           open={props.open}
+          ref={wrapperRef}
           onClose={handleClose}
           closeAfterTransition
           BackdropComponent={Backdrop}

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from "react";
+import React, { useRef, useState, useCallback, useEffect } from "react";
 
 import { Box, Stack } from "@mui/system";
 import Button from "@mui/material/Button";
@@ -40,6 +40,46 @@ const affectedInfo = [
 const Comments = ({ editor, open, setOpen, width, dept }) => {
   //   const [editorData, setEditorData] = React.useState(DEFAULT_INITIAL_DATA);
   //   const [ed, setEd] = useState();
+  const [quill, setQuill] = useState("");
+
+  //   const containerRef = useRef();
+
+  //   console.log(containerRef);
+
+  //   useEffect(() => {
+  //     console.log(quill);
+  //     if (quill === null || quill === undefined) return;
+  //     const holder = (delta, oldDelta, source) => {
+  //       if (source !== "user") {
+  //         return;
+  //       }
+  //     };
+
+  //     quill.on("text-change", holder);
+  //   }, [quill]);
+
+  //   useEffect(() => {
+  //     if (quill === null || quill === undefined || quill === "") return;
+  //     const handler = () =>
+  //       localStorage.setItem("comments", JSON.stringify(quill.getContents()));
+  //     setInterval(handler, 10000);
+
+  //     return () => {
+  //       clearInterval(handler);
+  //     };
+  //   }, [quill]);
+
+  //   console.log(localStorage.getItem("comments"), "maduvha ");
+
+  useEffect(() => {
+    if (quill === null || quill === undefined || quill === "") return;
+
+    if (localStorage.getItem("comments")) {
+      quill.setContents(localStorage.getItem("comments"));
+    }
+  }, [quill]);
+
+  //   console.log(localStorage.getItem("comments"));
 
   const EdITOR_HOLDER_ID = editor;
 
@@ -57,7 +97,14 @@ const Comments = ({ editor, open, setOpen, width, dept }) => {
         },
         theme: "snow",
       });
+      setQuill(editorQ);
+      //   editorQ.on("text-change", function (delta, oldDelta, source) {
+      //     console.log(delta);
+      //   });
+
+      //   console.log(editorQ.getContents());
     },
+
     [EdITOR_HOLDER_ID]
   );
 
