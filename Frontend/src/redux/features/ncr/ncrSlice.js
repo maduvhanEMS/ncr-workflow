@@ -12,49 +12,95 @@ const initialState = {
       nonConformance:
         "Propellant failure. Failed to meet relative dynamic vivacity",
       priorityLevel: "",
-      details: [],
+      characteristics: [
+        {
+          characteristics: "",
+          specification: "",
+          results: "",
+          classification: "",
+        },
+      ],
+      details: [
+        {
+          name: "",
+          department: "",
+          status: "Not Started",
+          createdAt: Date.now(),
+          comments: "",
+          correctiveActions: "",
+          decision: "",
+        },
+      ],
       files: [],
+      affectedInformation: {
+        safety: false,
+        strength: false,
+        systemPerformance: false,
+        maintainability: false,
+        interchangeability: false,
+        reliability: false,
+        specification: false,
+      },
+      createdAt: Date.now(),
     },
     {
       id: 2,
-      status: "In Progress",
+      status: "Initiated",
       partDescription: "Propellant S365",
       productName: "Propellant S365",
       nonConformance: "Performance above specifation",
-      priorityLevel: "Medium",
+      priorityLevel: "",
+      characteristics: [
+        {
+          characteristics: "",
+          specification: "",
+          results: "",
+          classification: "",
+        },
+      ],
       details: [
         {
-          name: "Heinrich",
-          department: "QA",
-          status: "Completed",
+          name: "",
+          department: "",
+          status: "Not Started",
+          createdAt: Date.now(),
+          comments: "",
+          correctiveActions: "",
+          decision: "",
         },
-        { name: "Saajidah", department: "OPS", status: "Checked out" },
-        { name: "Peter", department: "PD", status: "Not Started" },
       ],
       files: [],
+      createdAt: Date.now(),
     },
     {
       id: 3,
-      status: "In Progress",
+      status: "Initiated",
       partDescription: "Propellant S265",
       productName: "Propellant S265",
       nonConformance:
         "From web development to data science, Python offers an incredibly diverse set of tools. Its easy-to-read syntax and quick learning curve makes it a popular language but it lacks the divers",
       priorityLevel: "low",
+      characteristics: [
+        {
+          characteristics: "",
+          specification: "",
+          results: "",
+          classification: "",
+        },
+      ],
       details: [
         {
-          name: "Heinrich",
-          department: "QA",
-          status: "Checked out",
-        },
-        { name: "Saajidah", department: "OPS", status: "Checked out" },
-        {
-          name: "Peter",
-          department: "PD",
-          status: "Completed",
+          name: "",
+          department: "",
+          status: "",
+          createdAt: Date.now(),
+          comments: "",
+          correctiveActions: "",
+          decision: "",
         },
       ],
       files: [],
+      createdAt: Date.now(),
     },
   ],
 };
@@ -73,13 +119,16 @@ export const ncrSlice = createSlice({
     },
 
     AssignNCR: (state, action) => {
+      console.log("actions");
       // state.isSuccess = true;
-      const { id, details, files, priority } = action.payload;
+      const { id, details, files, priorityLevel, characteristics } =
+        action.payload;
       const index = state.data.findIndex((item) => item.id === id);
       state.data[index].status = "In Progress";
       state.data[index].details = details;
       state.data[index].files = files;
-      state.data[index].priorityLevel = priority;
+      state.data[index].characteristics = characteristics;
+      state.data[index].priorityLevel = priorityLevel;
     },
     reset: (state) => (state.isSuccess = false),
   },

@@ -1,5 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
+import { toast } from "react-toastify";
 
 const style = {
   justifyContent: "center",
@@ -14,9 +15,35 @@ const style = {
   cursor: "pointer",
 };
 
-function DragandDrop({ handleDrop, handleFiles }) {
+function DragandDrop({ files, handleAddFile }) {
   const handleDragEnter = (e) => {
     e.preventDefault();
+  };
+
+  const handleFiles = (e) => {
+    e.preventDefault();
+    handleFile(Object.values({ ...e.target.files }));
+  };
+
+  const handleFile = (uploadFiles) => {
+    let fileArray = [];
+    uploadFiles.forEach((file) => {
+      if (!file.type.startsWith("application")) {
+        return toast.error("Please Insert pdf file");
+      }
+      const idx = files.findIndex((item) => item.name === file.name);
+      if (idx >= 0) {
+        return toast.error("File already uploaded");
+      }
+      fileArray.push(file);
+    });
+
+    handleAddFile(fileArray);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    handleFile(Object.values({ ...e.dataTransfer.files }));
   };
 
   const handleDragOver = (e) => {
@@ -24,12 +51,10 @@ function DragandDrop({ handleDrop, handleFiles }) {
     e.dataTransfer.dropEffect = "move";
   };
 
-  //   const handleDrop = (e) => {
-  //     e.preventDefault();
-  //   };
   const handleDragLeave = (e) => {
     e.preventDefault();
   };
+
   return (
     <Box
       sx={style}

@@ -6,9 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { updateNCR } from "../redux/features/ncr/ncrSlice";
 import BasicModal from "../utils/BasicModal";
 import { createBrowserHistory } from "history";
-import Assignment from "../component/forms/Assignment";
 import ProgressForm from "../component/forms/ProgressForm";
-import Populate from "../component/forms/Populate/Populate";
 
 const Headers = ["Initiated", "In Progress", "Review", "Approved"];
 const colors = ["black", "purple", "blue", "green", "green"];
@@ -51,7 +49,6 @@ function Workflow() {
       //check if we are dropping it at In progress
       if (status === "In Progress") {
         //check if the data is populated
-        console.log(data);
         const index = await data.findIndex((item) => item.id === id);
 
         if (!data[index].details.length > 0) {
@@ -75,7 +72,7 @@ function Workflow() {
     setOpen(true);
     setId(id);
     setStage(header);
-    history.push(`/${header}?id=${id}`);
+    history.push(`?${header}?id=${id}`);
   };
 
   const handleStart = (e, index) => {
@@ -86,7 +83,7 @@ function Workflow() {
     <Container>
       <BasicModal open={open} setOpen={setOpen} idx={id} width={1000}>
         {/* <Assignment id={id} /> */}
-        <ProgressForm id={id} status={stage} />
+        <ProgressForm id={id} status={stage} ncrdata={data} />
         {/* <Populate /> */}
       </BasicModal>
       <StatusContainer>

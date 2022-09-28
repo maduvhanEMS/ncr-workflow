@@ -5,6 +5,8 @@ import Button from "@mui/material/Button";
 import Quill from "quill";
 import BasicModal from "../../../utils/BasicModal";
 import { Checkbox, Typography } from "@mui/material";
+import * as Yup from "yup";
+import { useFormik, Formik, Form, Field, FieldArray } from "formik";
 
 var toolbarOptions = [
   ["bold", "italic", "underline", "strike"], // toggled buttons
@@ -37,14 +39,10 @@ const affectedInfo = [
   "specification",
 ];
 
-const Comments = ({ editor, open, setOpen, width, dept }) => {
+const Comments = ({ editor, open, setOpen, width, dept, data }) => {
   //   const [editorData, setEditorData] = React.useState(DEFAULT_INITIAL_DATA);
   //   const [ed, setEd] = useState();
   const [quill, setQuill] = useState("");
-
-  //   const containerRef = useRef();
-
-  //   console.log(containerRef);
 
   //   useEffect(() => {
   //     console.log(quill);
@@ -79,8 +77,6 @@ const Comments = ({ editor, open, setOpen, width, dept }) => {
     }
   }, [quill]);
 
-  //   console.log(localStorage.getItem("comments"));
-
   const EdITOR_HOLDER_ID = editor;
 
   const editorWrapper = useCallback(
@@ -98,11 +94,6 @@ const Comments = ({ editor, open, setOpen, width, dept }) => {
         theme: "snow",
       });
       setQuill(editorQ);
-      //   editorQ.on("text-change", function (delta, oldDelta, source) {
-      //     console.log(delta);
-      //   });
-
-      //   console.log(editorQ.getContents());
     },
 
     [EdITOR_HOLDER_ID]
@@ -118,7 +109,7 @@ const Comments = ({ editor, open, setOpen, width, dept }) => {
           width: "100%",
         }}
       ></Box>
-      {dept === "PD" && (
+      {dept === "Product Development" && (
         <Stack mt={2} direction="row" justifyContent="space-between">
           <Stack>
             {affectedInfo.slice(0, 4).map((info) => (
@@ -143,7 +134,7 @@ const Comments = ({ editor, open, setOpen, width, dept }) => {
             ))}
           </Stack>
           <Stack>
-            {affectedInfo.slice(0, 4).map((info) => (
+            {affectedInfo.slice(4, 7).map((info) => (
               <Box
                 key={info}
                 sx={{

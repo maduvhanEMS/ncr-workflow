@@ -14,58 +14,76 @@ import AddIcon from "@mui/icons-material/Add";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { FieldArray, Form, Field, Formik } from "formik";
+import * as Yup from "yup";
+import styles from "./form.module.css";
 
-const data = [
-  {
-    charateristics: "Relative Dynamic Vivacity",
-    specification: "06-7600-2020-046",
-    results: "0.3",
-    classification: "Major B",
-  },
-];
+// const validationSchema = Yup.object({
+//   charateristics: Yup.array().of(
+//     Yup.object().shape({
+//       charateristics: Yup.string().required("Charateristics is required"),
+//       specification: Yup.string().required("Specification is required"),
+//       results: Yup.string().required("Results is required"),
+//       classification: Yup.string().required("Classification is required"),
+//     })
+//   ),
+// });
 
-const Charateristics = ({ status }) => {
-  const [formData, setFormData] = useState([
-    {
-      charateristics: "",
-      specification: "",
-      results: "",
-      classification: "",
-    },
-  ]);
+const Charateristics = ({ status, data, setData, ncrData }) => {
+  // const [formData, setFormData] = useState([
+  //   {
+  //     charateristics: "",
+  //     specification: "",
+  //     results: "",
+  //     classification: "",
+  //   },
+  // ]);
   const [isEdit, setIsEdit] = useState(false);
 
-  useEffect(() => {
-    setFormData([...data]);
-  }, []);
+  // useEffect(() => {
+  //   setData((prev) => ({ ...prev, characteristics: ncrData }));
+  // }, [ncrData, setData]);
 
-  const handleChange = (e, i) => {
-    const { name, value } = e.target;
+  const handleChange = (i) => {
+    return (e) => {
+      const { name, value } = e.target;
 
-    //find index
-    const data = [...formData];
-    data[i][name] = value;
-    setFormData(data);
+      setData((prevState) => {
+        const newState = prevState.characteristics.map((obj, index) => {
+          if (i === index) {
+            return { ...obj, [name]: value };
+          }
+          return obj;
+        });
+
+        return { ...prevState, characteristics: newState };
+      });
+    };
   };
 
   const handleAdd = () => {
-    setFormData((prevState) => [
+    setData((prevState) => ({
       ...prevState,
-      {
-        charateristics: "",
-        specification: "",
-        results: "",
-        classification: "",
-      },
-    ]);
+      characteristics: [
+        ...prevState.characteristics,
+        {
+          characteristics: "",
+          specification: "",
+          results: "",
+          classification: "",
+        },
+      ],
+    }));
     if (status !== "Initiated") {
       setIsEdit(true);
     }
   };
 
   const handleRemove = (idx) => {
-    const filteredData = formData.filter((_, index) => index !== idx);
-    setFormData(filteredData);
+    const filteredData = data.charateristics.filter(
+      (_, index) => index !== idx
+    );
+    setData(filteredData);
   };
 
   const handleEdit = () => {
@@ -73,20 +91,10 @@ const Charateristics = ({ status }) => {
   };
 
   const handleCancel = () => {
-    //check if there is a
-    // const chars = [...formData];
-
-    const isEmptyArray = formData.filter((item) =>
+    const isEmptyArray = data.characteristics.filter((item) =>
       Object.values(item).some((item) => item !== "")
     );
-    // console.log(isEmptyArray);
-    // for (var i = 0; i < isEmptyArray.length; i++) {
-    //   if (isEmptyArray[i] === true) {
-    //     chars.splice(i, 1);
-    //   }
-    // }
-
-    setFormData(isEmptyArray);
+    setData(isEmptyArray);
     setIsEdit(false);
   };
 
@@ -123,39 +131,41 @@ const Charateristics = ({ status }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {formData.map((data, index) =>
+          {data.characteristics.map((chars, index) =>
             status === "Initiated" || isEdit ? (
               <TableRow key={index}>
                 <TableCell>
                   <textarea
-                    name="charateristics"
-                    style={{ resize: "vertical" }}
-                    value={data.charateristics}
-                    onChange={(e) => handleChange(e, index)}
+                    name="characteristics"
+                    className={styles["input-textarea"]}
+                    value={chars.charateristics}
+                    onChange={handleChange(index)}
                   />
                 </TableCell>
                 <TableCell>
                   <textarea
                     name="specification"
-                    value={data.specification}
-                    style={{ resize: "vertical" }}
-                    onChange={(e) => handleChange(e, index)}
+                    value={chars.specification}
+                    className={styles["input-textarea"]}
+                    onChange={handleChange(index)}
                   />
                 </TableCell>
                 <TableCell>
                   <textarea
                     name="results"
-                    value={data.results}
-                    style={{ resize: "vertical" }}
-                    onChange={(e) => handleChange(e, index)}
+                    value={chars.results}
+                    style={{ textAlign: "center" }}
+                    className={styles["input-textarea"]}
+                    onChange={handleChange(index)}
                   />
                 </TableCell>
                 <TableCell>
                   <textarea
                     name="classification"
-                    value={data.classification}
-                    style={{ resize: "vertical" }}
-                    onChange={(e) => handleChange(e, index)}
+                    value={chars.classification}
+                    style={{ textAlign: "center" }}
+                    className={styles["input-textarea"]}
+                    onChange={handleChange(index)}
                   />
                 </TableCell>
 
@@ -172,10 +182,10 @@ const Charateristics = ({ status }) => {
               </TableRow>
             ) : (
               <TableRow key={index}>
-                <TableCell>{data.charateristics}</TableCell>
-                <TableCell>{data.specification}</TableCell>
-                <TableCell>{data.results}</TableCell>
-                <TableCell>{data.classification}</TableCell>
+                <TableCell>{chars.characteristics}</TableCell>
+                <TableCell>{chars.specification}</TableCell>
+                <TableCell>{chars.results}</TableCell>
+                <TableCell>{chars.classification}</TableCell>
                 <TableCell>
                   {index > 0 && (
                     <IconButton

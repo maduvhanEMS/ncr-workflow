@@ -1,0 +1,13 @@
+.input-textarea {
+  resize: vertical;
+  padding: 0.25em;
+  border: 0.05em solid #777;
+  border-radius: 0.5em;
+  outline: none;
+  margin: auto;
+}
+
+.input-textarea:focus {
+  border-color: hsl(200, 100%, 50%);
+  color: rgba(0, 0, 0, 0.8);
+}

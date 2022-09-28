@@ -1,22 +1,6 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Paper,
-  Table,
-  Typography,
-  Box,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  TableContainer,
-  //   TextField,
-  IconButton,
-  Input,
-  Select,
-  MenuItem,
-  MenuList,
-} from "@mui/material";
+import { Paper, Typography, Box, IconButton, Button } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
 import SaveIcon from "@mui/icons-material/Save";
@@ -30,89 +14,65 @@ import Files from "./Files";
 import DragandDrop from "../../utils/DragandDrop";
 import Comments from "./Populate/Comments";
 import Charateristics from "./Populate/Charateristics";
+import Assign from "./Populate/Assign";
+import { AssignNCR } from "../../redux/features/ncr/ncrSlice";
+import PriorityLevel from "./Populate/PriorityLevel";
 
 const ProgressForm = ({ id, status }) => {
-  const [edit, setEdit] = useState({ index: "", isEdit: false });
+  const dispatch = useDispatch();
+
+  const [formData, setFormData] = useState({
+    files: [],
+    details: [
+      {
+        name: "",
+        department: "",
+        status: "Not Started",
+        createdAt: Date.now(),
+      },
+    ],
+    characteristics: [
+      {
+        characteristics: "",
+        specification: "",
+        results: "",
+        classification: "",
+      },
+    ],
+    priorityLevel: "",
+  });
+
   const [open, setOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [files, setFiles] = useState([]);
   const [dept, setDept] = useState("");
 
   const data = useSelector((state) =>
     state.ncrs.data.find((item) => item.id === id)
   );
 
-  const handleEdit = (i) => {
-    setEdit((prevState) => ({
-      ...prevState,
-      isEdit: true,
-      index: i,
-    }));
-  };
-
-  //Update the files when the data changes
-  useMemo(() => {
-    console.log("you have been updated");
-    setFiles(data.files);
+  //update the initial values
+  useEffect(() => {
+    if (data !== undefined) {
+      setFormData(data);
+    }
   }, [data]);
 
-  const handleSave = (e, i) => {};
-
-  const handleCancel = (i) => {
-    setEdit((prevState) => ({
+  const handleAddFile = (file) => {
+    setFormData((prevState) => ({
       ...prevState,
-      isEdit: false,
+      files: [...prevState.files, ...file],
     }));
-  };
-
-  const handleFiles = (e) => {
-    let file = [];
-    if (e.target.files.length > 1) {
-      for (let x = 0; x < e.target.files.length; x++) {
-        file.push(e.target.files[x]);
-      }
-    } else {
-      //first check if file already exist
-      const idx = files.findIndex(
-        (file) => file.name === e.target.files[0].name
-      );
-
-      if (idx < 0) {
-        file.push(e.target.files[0]);
-      } else {
-        toast.error("File already uploaded");
-      }
-    }
-
-    setFiles([...files, ...file]);
-  };
-
-  const handleFile = (file) => {
-    //validation
-    if (!file.type.startsWith("application"))
-      return toast.error("Please Insert pdf file");
-
-    //create object url
-    setFiles([...files, file]);
-    // setUrls([...urls, window.URL.createObjectURL(file)]);
-  };
-
-  // const handleClick = () => {
-  //   console.log("We are clicked");
-  // };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    handleFile(e.dataTransfer.files[0]);
   };
 
   const handleOpen = () => {
     setOpen(!open);
   };
 
-  const handleIsOpen = (dept) => {
-    setIsOpen(!isOpen);
-    setDept(dept);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert("You are about to submit a form");
+    // if (status === "Initiated") {
+    dispatch(AssignNCR({ ...formData, id }));
   };
 
   return (
@@ -120,118 +80,30 @@ const ProgressForm = ({ id, status }) => {
       <Typography id="transition-modal-title" variant="h5" component="h2">
         {status}
       </Typography>
-      <Charateristics status={status} />
-      {/* <Box
-        sx={{
-          display: "flex",
-          justifyContent: "flex-end",
-          width: "100%",
+      <Charateristics
+        status={status}
+        setData={setFormData}
+        data={formData}
+        ncrData={data.characteristics}
+      />
+      <Assign
+        data={formData}
+        ncrData={data.details}
+        open={isOpen}
+        status={status}
+        setData={setFormData}
+        handleOpen={(dept) => {
+          setIsOpen((prev) => !prev);
+          setDept(dept);
         }}
-      >
-        <IconButton>
-          <AddIcon sx={{ color: "blue" }} />
-        </IconButton>
-        <IconButton>N
-          <EditIcon sx={{ color: "blue" }} />
-        </IconButton>
-      </Box> */}
+      />
+      <PriorityLevel
+        handleChange={(e) => {
+          setFormData((prev) => ({ ...prev, priorityLevel: e.target.value }));
+        }}
+        priorityLevel={formData.priorityLevel}
+      />
       <Box>
-        <TableContainer component="div" sx={{ mt: 2 }}>
-          <Table size="small">
-            <TableHead>
-              <TableRow>
-                <TableCell>Department</TableCell>
-                <TableCell>Name&nbsp;</TableCell>
-                <TableCell>Status&nbsp;</TableCell>
-                <TableCell>UpdatedAt&nbsp;</TableCell>
-                <TableCell>Actions&nbsp;</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {data.details.map((row, index) => (
-                <TableRow key={index}>
-                  {edit.index === index && edit.isEdit ? (
-                    <>
-                      <TableCell>
-                        <Select
-                          value={row.name}
-                          name="department"
-                          fullWidth
-                          size="small"
-                          sx={{ width: 150 }}
-                        >
-                          <MenuItem value="Maduvha Nemadandila">
-                            Maduvha Nemadandila
-                          </MenuItem>
-                          <MenuItem value="Maduvha Nemadandila">
-                            Heinrich
-                          </MenuItem>
-                          <MenuItem value="Karabo Notwana">
-                            Karabo Notwana
-                          </MenuItem>
-                          <MenuItem value="Thabiso Bokaba">
-                            Thabiso Bokaba
-                          </MenuItem>
-                        </Select>
-                      </TableCell>
-                      <TableCell>{row.department}</TableCell>
-                      <TableCell>
-                        <Select
-                          size="small"
-                          labelId="departments"
-                          label="departments"
-                          value={row.status}
-                          name="department"
-                          //   onChange={(e) => handleChange(e, index)}
-                        >
-                          <MenuItem value="">
-                            <em>None</em>
-                          </MenuItem>
-                          <MenuItem value="Completed">Completed</MenuItem>
-                          <MenuItem value="Checked out">In Progress</MenuItem>
-                          <MenuItem value="Not Started">Not Started</MenuItem>
-                        </Select>
-                      </TableCell>
-                      <TableCell>{moment().startOf("day").fromNow()}</TableCell>
-                    </>
-                  ) : (
-                    <>
-                      <TableCell>{row.name}</TableCell>
-                      <TableCell>{row.department}</TableCell>
-                      <TableCell>{row.status}</TableCell>
-                      <TableCell>{moment().startOf("day").fromNow()}</TableCell>
-                    </>
-                  )}
-
-                  <TableCell>
-                    {edit.index === index && edit.isEdit ? (
-                      <>
-                        <IconButton onClick={() => handleEdit(index)}>
-                          <SaveIcon />
-                        </IconButton>
-                        <IconButton onClick={() => handleCancel(index)}>
-                          <CancelIcon />
-                        </IconButton>
-                      </>
-                    ) : (
-                      <>
-                        <IconButton onClick={() => handleEdit(index)}>
-                          <EditIcon />
-                        </IconButton>
-                        <span
-                          style={{ color: "blue", cursor: "pointer" }}
-                          onClick={() => handleIsOpen(row.department)}
-                        >
-                          Comment
-                        </span>
-                      </>
-                    )}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
         <Box mt={2}>
           <Typography>
             Attachments
@@ -239,21 +111,28 @@ const ProgressForm = ({ id, status }) => {
               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
           </Typography>
-          {open && (
-            // <MenuList>
-            //   <MenuItem>Maduvha</MenuItem>
-            //   <MenuItem>Maduvha</MenuItem>
-            //   <MenuItem>Maduvha</MenuItem>
-            //   <MenuItem>Maduvha</MenuItem>
-            // </MenuList>
-            <Files files={files} />
-          )}
+          {open && <Files files={formData.files} />}
         </Box>
         <Box>
-          <DragandDrop handleDrop={handleDrop} handleFiles={handleFiles} />
+          <DragandDrop files={formData.files} handleAddFile={handleAddFile} />
+        </Box>
+        <Box mt={5}>
+          <Button variant="contained" type="submit" onClick={handleSubmit}>
+            Submit
+          </Button>
+          <Button variant="contained" sx={{ marginLeft: "10px" }} color="error">
+            Clear
+          </Button>
         </Box>
       </Box>
-      <Comments open={isOpen} setOpen={setIsOpen} width={800} dept={dept} />
+      <Comments
+        open={isOpen}
+        handleOpen={() => setIsOpen((prev) => !prev)}
+        setOpen={setIsOpen}
+        width={800}
+        dept={dept}
+        data={data}
+      />
     </Paper>
   );
 };

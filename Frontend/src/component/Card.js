@@ -4,6 +4,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { IconButton } from "@mui/material";
 import CircleIcon from "@mui/icons-material/Circle";
 import moment from "moment";
+import { shortenDepartment } from "../utils/shortenDepartment";
 // import { createBrowserHistory } from "history";
 
 function Card({ data, index, handleOpen, id, header, handleStart }) {
@@ -13,7 +14,6 @@ function Card({ data, index, handleOpen, id, header, handleStart }) {
 
   const onDragStart = (e, id) => {
     handleStart(e, id);
-    console.log(id);
   };
 
   const colors = (priorityLevel) => {
@@ -58,7 +58,7 @@ function Card({ data, index, handleOpen, id, header, handleStart }) {
               {data?.status === "In Progress" &&
                 data?.details.map((item, idx) => (
                   <ItemInfo key={idx}>
-                    {item.department}:
+                    {shortenDepartment(item.department)}:
                     <CircleIcon sx={{ color: statusColors(item.status) }} />
                   </ItemInfo>
                 ))}
@@ -66,7 +66,7 @@ function Card({ data, index, handleOpen, id, header, handleStart }) {
           </CardInfo>
           <Details>
             <span>Initiated by: M Nemadandila </span>
-            <span>{moment(new Date().now).fromNow()} </span>
+            <span>{moment(data.createdAt).fromNow()} </span>
           </Details>
         </CardBody>
         <IconButton
